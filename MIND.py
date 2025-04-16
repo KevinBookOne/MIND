@@ -19,6 +19,12 @@ start_datetime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 # Initialize a list to store time records for each case
 case_time_records = []
 
+# Set up time log file path in MIND directory
+time_log_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "mind_registration_time_log.txt")
+# Initialize the time log file
+with open(time_log_path, 'w') as f:
+    f.write(f"Registration Time Log\n=====================\nStart time: {start_datetime}\n\nCase-by-Case Processing Times:\n==============================\n")
+
 # ============================
 # 1. Registration Setup & Loss
 # ============================
@@ -177,15 +183,24 @@ for fixed_image_path, moving_image_path, case_name in file_pairs:
         case_duration = case_end_time - case_start_time
         
         # Store case timing information
-        case_time_records.append({
+        case_info = {
             "case_name": case_name,
             "start_time": case_start_datetime,
             "end_time": case_end_datetime,
             "duration_seconds": case_duration,
             "duration_minutes": case_duration / 60
-        })
+        }
+        case_time_records.append(case_info)
+        
+        # Write this case's timing information to the log file immediately
+        with open(time_log_path, 'a') as f:
+            f.write(f"Case: {case_name}\n")
+            f.write(f"  Start: {case_start_datetime}\n")
+            f.write(f"  End: {case_end_datetime}\n")
+            f.write(f"  Duration: {case_duration:.2f} seconds ({case_duration/60:.2f} minutes)\n\n")
         
         print(f"⏱️ 處理時間: {case_duration:.2f} 秒 ({case_duration/60:.2f} 分鐘)")
+        print(f"✅ 時間記錄已更新至: {time_log_path}")
     except Exception as e:
         print(f"🚨 儲存失敗: {case_name}，錯誤訊息: {e}")
         continue
@@ -199,31 +214,17 @@ end_datetime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 # Calculate time duration
 registration_duration = end_time - start_time
 
-# Format time information with per-case details
-time_info = f"Registration Time Log\n=====================\nStart time: {start_datetime}\nEnd time: {end_datetime}\nTotal duration: {registration_duration:.2f} seconds ({registration_duration/60:.2f} minutes)\n"
-
-# Add detailed time records for each case
-time_info += "\nCase-by-Case Processing Times:\n"
-time_info += "==============================\n"
-
-for record in case_time_records:
-    time_info += f"Case: {record['case_name']}\n"
-    time_info += f"  Start: {record['start_time']}\n"
-    time_info += f"  End: {record['end_time']}\n"
-    time_info += f"  Duration: {record['duration_seconds']:.2f} seconds ({record['duration_minutes']:.2f} minutes)\n\n"
-
-# Save time information to a text file
-time_log_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "mind_registration_time_log.txt")
-with open(time_log_path, 'w') as f:
-    f.write(time_info)
-
-# Also save a summary of all processed cases
-f.write("\nAll Processed Cases:\n")
-for fixed_path, moving_path, case_name in file_pairs:
-    if any(record['case_name'] == case_name for record in case_time_records):
-        f.write(f"- {case_name} ✓\n")
-    else:
-        f.write(f"- {case_name} (skipped)\n")
+# Update final time information to the log file
+with open(time_log_path, 'a') as f:
+    f.write(f"\nEnd time: {end_datetime}\n")
+    f.write(f"Total duration: {registration_duration:.2f} seconds ({registration_duration/60:.2f} minutes)\n")
+    # Also save a summary of all processed cases
+    f.write("\nAll Processed Cases:\n")
+    for fixed_path, moving_path, case_name in file_pairs:
+        if any(record['case_name'] == case_name for record in case_time_records):
+            f.write(f"- {case_name} ✓\n")
+        else:
+            f.write(f"- {case_name} (skipped)\n")
 
 print(f"✅ Registration finished!! 總處理時間: {registration_duration:.2f} 秒")
 print(f"✅ 時間記錄已儲存至: {time_log_path}")
