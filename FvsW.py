@@ -306,101 +306,101 @@ def main():
     # Make sure output directory exists
     os.makedirs(BOUNDARY_RESULT_DIR, exist_ok=True)
     
-    # Get all fixed images in the directory
-    fixed_files = [f for f in os.listdir(FIXED_IMAGE_DIR) if f.endswith('.nii.gz')]
-    
-    # Get all warped images
+    # Get all warped images from the result directory
     warped_files = [f for f in os.listdir(RESULT_DIR) if f.endswith('_warped.nii.gz')]
+    
+    # Get all fixed images for reference
+    fixed_files = [f for f in os.listdir(FIXED_IMAGE_DIR) if f.endswith('.nii.gz')]
     
     print(f"Found {len(fixed_files)} fixed images and {len(warped_files)} warped images")
     
-    # Find matching pairs based on patient name
+    # Track processing statistics
     processed_pairs = 0
     successful_pairs = 0
     
-    # Get all unique patient names
+    # Get all unique patient names from the result directory
     patient_names = set()
-    for fixed_filename in fixed_files:
-        if '_' in fixed_filename:
-            patient_name = fixed_filename.split('_')[0].strip()
+    for warped_filename in warped_files:
+        if '_' in warped_filename:
+            patient_name = warped_filename.split('_')[0].strip()
             patient_names.add(patient_name)
     
-    print(f"\nFound {len(patient_names)} unique patients")
+    print(f"\nFound {len(patient_names)} unique patients in result directory")
     
-    # Process all patients automatically
-    selected_patients = sorted(patient_names)
-    
-    # Process only the selected patients
-    for fixed_filename in fixed_files:
-        # Extract patient name from fixed filename (everything before the first underscore)
-        if '_' in fixed_filename:
-            patient_name = fixed_filename.split('_')[0].strip()
+    # Process all warped files in the result directory
+    for warped_filename in warped_files:
+        # Extract patient name and original filename from warped filename
+        # (remove '_warped.nii.gz' suffix to get the original fixed file name)
+        original_name = warped_filename.replace('_warped.nii.gz', '.nii.gz')
+        patient_name = warped_filename.split('_')[0].strip() if '_' in warped_filename else ''
+        
+        # Get the slice range from the warped file
+        warped_range = None
+        parts = warped_filename.replace('_warped.nii.gz', '').split('_')
+        if len(parts) >= 3:
+            try:
+                w_start = parts[-2]
+                w_end = parts[-1]
+                if w_start.isdigit() and w_end.isdigit():
+                    warped_range = (int(w_start), int(w_end))
+            except (IndexError, ValueError):
+                warped_range = None
+        
+        # Look for the matching fixed file
+        # First try to find the exact match based on the original name
+        if original_name in fixed_files:
+            fixed_filename = original_name
+        else:
+            # Otherwise, find a file with the same patient name and matching range if possible
+            matching_fixed = [f for f in fixed_files if patient_name in f]
             
-            # Skip if not in selected patients
-            if patient_name not in selected_patients:
+            if not matching_fixed:
+                print(f"Warning: No matching fixed file found for {warped_filename}. Skipping.")
                 continue
             
-            # Get the slice range from the fixed file
-            fixed_range = None
-            if len(fixed_filename.split('_')) >= 3:
-                try:
-                    range_start = fixed_filename.split('_')[-2]
-                    range_end = fixed_filename.split('_')[-1].replace('.nii.gz', '')
-                    if range_start.isdigit() and range_end.isdigit():
-                        fixed_range = (int(range_start), int(range_end))
-                except (IndexError, ValueError):
+            # Default to first match if we don't have range information
+            fixed_filename = matching_fixed[0]
+            
+            if warped_range:
+                # Try to find a fixed file with matching slice range
+                for fixed_file in matching_fixed:
                     fixed_range = None
-            
-            # Look for warped files containing the same patient name
-            matching_warped = [w for w in warped_files if patient_name in w and w.endswith('_warped.nii.gz')]
-            
-            if matching_warped:
-                # Try to find the best matching file based on slice range if available
-                best_match = matching_warped[0]  # Default to first
-                
-                if fixed_range:
-                    # Try to find a warped file with overlapping slice range
-                    for warped_file in matching_warped:
-                        warped_range = None
-                        parts = warped_file.replace('_warped.nii.gz', '').split('_')
-                        if len(parts) >= 3:
-                            try:
-                                w_start = parts[-2]
-                                w_end = parts[-1]
-                                if w_start.isdigit() and w_end.isdigit():
-                                    warped_range = (int(w_start), int(w_end))
-                            except (IndexError, ValueError):
-                                continue
-                        
-                        if warped_range:
-                            # Check for overlap
-                            if (warped_range[0] <= fixed_range[1] and warped_range[1] >= fixed_range[0]):
-                                best_match = warped_file
-                                break
-                
-                warped_filename = best_match
-                fixed_path = os.path.join(FIXED_IMAGE_DIR, fixed_filename)
-                warped_path = os.path.join(RESULT_DIR, warped_filename)
-                
-                # Get a readable case name for the output
-                case_name = f"{patient_name}_{fixed_filename.replace('.nii.gz', '')}_vs_{warped_filename.replace('_warped.nii.gz', '')}"
-                
-                print(f"\nProcessing:\n  Fixed: {fixed_filename}\n  Warped: {warped_filename}")
-                
-                # Compare the fixed and warped images
-                try:
-                    compare_fixed_warped(
-                        fixed_path,
-                        warped_path,
-                        case_name,
-                        save_path=BOUNDARY_RESULT_DIR,
-                        show_animation=True
-                    )
-                    successful_pairs += 1
-                except Exception as e:
-                    print(f"Error processing this pair: {str(e)}")
-                
-                processed_pairs += 1
+                    if len(fixed_file.split('_')) >= 3:
+                        try:
+                            f_start = fixed_file.split('_')[-2]
+                            f_end = fixed_file.split('_')[-1].replace('.nii.gz', '')
+                            if f_start.isdigit() and f_end.isdigit():
+                                fixed_range = (int(f_start), int(f_end))
+                        except (IndexError, ValueError):
+                            continue
+                    
+                    if fixed_range and fixed_range == warped_range:
+                        fixed_filename = fixed_file
+                        break
+        
+        # Now we have both the warped file and its corresponding fixed file
+        fixed_path = os.path.join(FIXED_IMAGE_DIR, fixed_filename)
+        warped_path = os.path.join(RESULT_DIR, warped_filename)
+        
+        # Get a readable case name for the output
+        case_name = f"{patient_name}_{fixed_filename.replace('.nii.gz', '')}_vs_{warped_filename.replace('_warped.nii.gz', '')}"
+        
+        print(f"\nProcessing:\n  Fixed: {fixed_filename}\n  Warped: {warped_filename}")
+        
+        # Compare the fixed and warped images
+        try:
+            compare_fixed_warped(
+                fixed_path,
+                warped_path,
+                case_name,
+                save_path=BOUNDARY_RESULT_DIR,
+                show_animation=True
+            )
+            successful_pairs += 1
+        except Exception as e:
+            print(f"Error processing this pair: {str(e)}")
+        
+        processed_pairs += 1
     
     print(f"\nCompleted processing {processed_pairs} image pairs ({successful_pairs} successful)")
 
