@@ -31,28 +31,20 @@ def generate_boundary(data):
 
     for slice_index in range(data.shape[2]):
         slice_data = data[:, :, slice_index]
-        
-        # Skip empty slices
-        if np.all(slice_data == 0):
-            continue
 
         # (1) Rescale intensities
-        p2, p98 = np.percentile(slice_data[slice_data > 0], (2, 98)) if np.any(slice_data > 0) else (0, 1)
+        p2, p98 = np.percentile(slice_data, (2, 98))
         slice_data = rescale_intensity(slice_data, in_range=(p2, p98), out_range=(0, 1))
 
         # (2) Slight Gaussian smoothing
         smoothed_data = gaussian_filter(slice_data, sigma=0.5)
 
         # (3) Otsu threshold
-        if np.all(smoothed_data == 0) or len(np.unique(smoothed_data)) <= 1:
+        if np.all(smoothed_data == 0):
             mask = np.zeros_like(smoothed_data, dtype=bool)
         else:
-            try:
-                t = threshold_otsu(smoothed_data)
-                mask = smoothed_data > t
-            except:
-                # Fallback if Otsu fails
-                mask = smoothed_data > np.mean(smoothed_data)
+            t = threshold_otsu(smoothed_data)
+            mask = smoothed_data > t
 
         # (4) boundary = dilation XOR erosion(dilation)
         expanded_mask = binary_dilation(mask, iterations=1)
@@ -159,114 +151,9 @@ def compare_fixed_warped(fixed_image_path, warped_image_path, case_name, save_pa
     """
     print(f"\n===== Comparing fixed vs warped for: {case_name} =====")
     
-    # Load fixed and warped data with associated metadata
-    fixed_img = nib.load(fixed_image_path)
-    warped_img = nib.load(warped_image_path)
-    fixed_data = fixed_img.get_fdata()
-    warped_data = warped_img.get_fdata()
-    
-    # Extract patient ID and slice information from filenames
-    fixed_filename = os.path.basename(fixed_image_path)
-    warped_filename = os.path.basename(warped_image_path)
-    
-    # Get slice ranges from filenames if available
-    fixed_range = None
-    warped_range = None
-    
-    # Parse fixed range
-    if '_' in fixed_filename:
-        parts = fixed_filename.replace('.nii.gz', '').split('_')
-        if len(parts) >= 3:
-            try:
-                f_start = int(parts[-2])
-                f_end = int(parts[-1].replace('.nii.gz', ''))
-                fixed_range = (f_start, f_end)
-                print(f"Fixed slice range from filename: {fixed_range}")
-            except (IndexError, ValueError):
-                fixed_range = None
-    
-    # Parse warped range
-    if '_' in warped_filename:
-        parts = warped_filename.replace('_warped.nii.gz', '').split('_')
-        if len(parts) >= 3:
-            try:
-                w_start = int(parts[-2])
-                w_end = int(parts[-1])
-                warped_range = (w_start, w_end)
-                print(f"Warped slice range from filename: {warped_range}")
-            except (IndexError, ValueError):
-                warped_range = None
-    
-    # Check dimensions
-    fixed_shape = fixed_data.shape
-    warped_shape = warped_data.shape
-    
-    print(f"Fixed image shape: {fixed_shape}")
-    print(f"Warped image shape: {warped_shape}")
-    
-    # Check if dimensions are compatible
-    if fixed_shape[0] != warped_shape[0] or fixed_shape[1] != warped_shape[1]:
-        print(f"WARNING: Fixed and warped images have different X-Y dimensions.")
-        print(f"Fixed: {fixed_shape[0]}x{fixed_shape[1]}, Warped: {warped_shape[0]}x{warped_shape[1]}")
-        print(f"Skipping this pair as they cannot be directly compared.")
-        return
-    
-    # Align and adjust slices based on filename range information
-    if fixed_range and warped_range:
-        # Determine the overlap between two ranges
-        overlap_start = max(fixed_range[0], warped_range[0])
-        overlap_end = min(fixed_range[1], warped_range[1])
-        
-        if overlap_start <= overlap_end:  # There is an overlap
-            print(f"Slice overlap range: {overlap_start}-{overlap_end}")
-            
-            # Calculate the slice indices for both volumes
-            fixed_start_idx = overlap_start - fixed_range[0]
-            fixed_end_idx = fixed_start_idx + (overlap_end - overlap_start)
-            
-            warped_start_idx = overlap_start - warped_range[0]
-            warped_end_idx = warped_start_idx + (overlap_end - overlap_start)
-            
-            # Ensure indices are within bounds
-            fixed_start_idx = max(0, min(fixed_start_idx, fixed_shape[2] - 1))
-            fixed_end_idx = max(0, min(fixed_end_idx, fixed_shape[2] - 1))
-            warped_start_idx = max(0, min(warped_start_idx, warped_shape[2] - 1))
-            warped_end_idx = max(0, min(warped_end_idx, warped_shape[2] - 1))
-            
-            # Ensure we have the same number of slices
-            slice_count = min(fixed_end_idx - fixed_start_idx + 1, warped_end_idx - warped_start_idx + 1)
-            
-            if slice_count > 0:
-                fixed_end_idx = fixed_start_idx + slice_count - 1
-                warped_end_idx = warped_start_idx + slice_count - 1
-                
-                # Extract the slices of interest
-                fixed_data = fixed_data[:, :, fixed_start_idx:fixed_end_idx+1]
-                warped_data = warped_data[:, :, warped_start_idx:warped_end_idx+1]
-                
-                print(f"Using aligned slices - Fixed: {fixed_start_idx}-{fixed_end_idx}, Warped: {warped_start_idx}-{warped_end_idx}")
-            else:
-                print("WARNING: No overlapping slices found despite range information")
-                # Fall back to default behavior
-                min_slices = min(fixed_shape[2], warped_shape[2])
-                fixed_data = fixed_data[:, :, :min_slices]
-                warped_data = warped_data[:, :, :min_slices]
-        else:
-            print("WARNING: No overlap between fixed and warped slice ranges")
-            # Fall back to default behavior
-            min_slices = min(fixed_shape[2], warped_shape[2])
-            fixed_data = fixed_data[:, :, :min_slices]
-            warped_data = warped_data[:, :, :min_slices]
-    else:
-        # Default behavior if no range information available
-        min_slices = min(fixed_shape[2], warped_shape[2])
-        if fixed_shape[2] != warped_shape[2]:
-            print(f"NOTE: Fixed and warped have different number of slices: {fixed_shape[2]} vs {warped_shape[2]}")
-            print(f"Using only the first {min_slices} slices for comparison")
-        
-        # Trim both arrays to have the same number of slices
-        fixed_data = fixed_data[:, :, :min_slices]
-        warped_data = warped_data[:, :, :min_slices]
+    # Load fixed and warped data
+    fixed_data = load_nifti_image(fixed_image_path)
+    warped_data = load_nifti_image(warped_image_path)
     
     # Generate boundaries
     fixed_boundary = generate_boundary(fixed_data)
@@ -297,98 +184,28 @@ def compare_fixed_warped(fixed_image_path, warped_image_path, case_name, save_pa
 #########################################
 
 def main():
-    # Directory setup - adjust these paths to your actual directories
-    BASE_DIR = '/home/kevin/Desktop/image registration/MIND'
-    FIXED_IMAGE_DIR = os.path.join(BASE_DIR, 'fixed')  # Fixed images are in the fixed subdirectory
-    RESULT_DIR = os.path.join(BASE_DIR, 'result')  # Warped images are in the result subdirectory
-    BOUNDARY_RESULT_DIR = os.path.join(BASE_DIR, 'boundary_result')
+    # DeepReg specific directory paths
+    FIXED_IMAGE_DIR = "/home/kevin/Desktop/image registration/MIND/fixed"
+    RESULT_DIR = "/home/kevin/Desktop/image registration/MIND/result"
+    BOUNDARY_RESULT_DIR = "/home/kevin/Desktop/image registration/MIND/boundary_result"
     
     # Make sure output directory exists
     os.makedirs(BOUNDARY_RESULT_DIR, exist_ok=True)
     
-    # Get all warped images from the result directory
-    warped_files = [f for f in os.listdir(RESULT_DIR) if f.endswith('_warped.nii.gz')]
+    # Get all fixed images in the directory
+    fixed_files = [f for f in os.listdir(FIXED_IMAGE_DIR) if f.endswith('.nii.gz') and not f.endswith('_warped.nii.gz')]
     
-    # Get all fixed images for reference
-    fixed_files = [f for f in os.listdir(FIXED_IMAGE_DIR) if f.endswith('.nii.gz')]
-    
-    print(f"Found {len(fixed_files)} fixed images and {len(warped_files)} warped images")
-    
-    # Track processing statistics
-    processed_pairs = 0
-    successful_pairs = 0
-    
-    # Get all unique patient names from the result directory
-    patient_names = set()
-    for warped_filename in warped_files:
-        if '_' in warped_filename:
-            patient_name = warped_filename.split('_')[0].strip()
-            patient_names.add(patient_name)
-    
-    print(f"\nFound {len(patient_names)} unique patients in result directory")
-    
-    # Process all warped files in the result directory
-    for warped_filename in warped_files:
-        # Extract patient name and original filename from warped filename
-        # (remove '_warped.nii.gz' suffix to get the original fixed file name)
-        original_name = warped_filename.replace('_warped.nii.gz', '.nii.gz')
-        patient_name = warped_filename.split('_')[0].strip() if '_' in warped_filename else ''
+    for filename in fixed_files:
+        case_name = filename.replace('.nii.gz', '')
         
-        # Get the slice range from the warped file
-        warped_range = None
-        parts = warped_filename.replace('_warped.nii.gz', '').split('_')
-        if len(parts) >= 3:
-            try:
-                w_start = parts[-2]
-                w_end = parts[-1]
-                if w_start.isdigit() and w_end.isdigit():
-                    warped_range = (int(w_start), int(w_end))
-            except (IndexError, ValueError):
-                warped_range = None
-        
-        # Look for the matching fixed file
-        # First try to find the exact match based on the original name
-        if original_name in fixed_files:
-            fixed_filename = original_name
-        else:
-            # Otherwise, find a file with the same patient name and matching range if possible
-            matching_fixed = [f for f in fixed_files if patient_name in f]
-            
-            if not matching_fixed:
-                print(f"Warning: No matching fixed file found for {warped_filename}. Skipping.")
-                continue
-            
-            # Default to first match if we don't have range information
-            fixed_filename = matching_fixed[0]
-            
-            if warped_range:
-                # Try to find a fixed file with matching slice range
-                for fixed_file in matching_fixed:
-                    fixed_range = None
-                    if len(fixed_file.split('_')) >= 3:
-                        try:
-                            f_start = fixed_file.split('_')[-2]
-                            f_end = fixed_file.split('_')[-1].replace('.nii.gz', '')
-                            if f_start.isdigit() and f_end.isdigit():
-                                fixed_range = (int(f_start), int(f_end))
-                        except (IndexError, ValueError):
-                            continue
-                    
-                    if fixed_range and fixed_range == warped_range:
-                        fixed_filename = fixed_file
-                        break
-        
-        # Now we have both the warped file and its corresponding fixed file
-        fixed_path = os.path.join(FIXED_IMAGE_DIR, fixed_filename)
+        # The warped image is in the result directory
+        warped_filename = f"{case_name}_warped.nii.gz"
         warped_path = os.path.join(RESULT_DIR, warped_filename)
         
-        # Get a readable case name for the output
-        case_name = f"{patient_name}_{fixed_filename.replace('.nii.gz', '')}_vs_{warped_filename.replace('_warped.nii.gz', '')}"
-        
-        print(f"\nProcessing:\n  Fixed: {fixed_filename}\n  Warped: {warped_filename}")
-        
-        # Compare the fixed and warped images
-        try:
+        if os.path.exists(warped_path):
+            fixed_path = os.path.join(FIXED_IMAGE_DIR, filename)
+            
+            # Compare the fixed and warped images
             compare_fixed_warped(
                 fixed_path,
                 warped_path,
@@ -396,13 +213,6 @@ def main():
                 save_path=BOUNDARY_RESULT_DIR,
                 show_animation=True
             )
-            successful_pairs += 1
-        except Exception as e:
-            print(f"Error processing this pair: {str(e)}")
-        
-        processed_pairs += 1
-    
-    print(f"\nCompleted processing {processed_pairs} image pairs ({successful_pairs} successful)")
 
 if __name__ == "__main__":
     main()
