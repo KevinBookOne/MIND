@@ -1,0 +1,61 @@
+Registration Time Log
+=====================
+Start time: 2025-04-18 09:54:57
+
+Case-by-Case Processing Times:
+==============================
+Case: ZHANG YING CHANG_22_131
+  Start: 2025-04-18 09:54:57
+  End: 2025-04-18 11:03:53
+  Duration: 4136.12 seconds (68.94 minutes)
+
+Case: WANG YOU_5_10
+  Start: 2025-04-18 11:03:53
+  End: 2025-04-18 11:07:34
+  Duration: 220.84 seconds (3.68 minutes)
+
+Case: CHEN KUN CHI_121_151
+  Start: 2025-04-18 11:07:34
+  End: 2025-04-18 11:26:14
+  Duration: 1120.11 seconds (18.67 minutes)
+
+Case: GUO JUAN KUANG_42_49
+  Start: 2025-04-18 11:26:14
+  End: 2025-04-18 11:30:29
+  Duration: 254.42 seconds (4.24 minutes)
+
+Case: GUO AN JIA_1_24
+  Start: 2025-04-18 11:30:29
+  End: 2025-04-18 11:45:02
+  Duration: 873.72 seconds (14.56 minutes)
+
+Case: HUANG CI QIAN_121_151
+  Start: 2025-04-18 11:45:02
+  End: 2025-04-18 12:03:44
+  Duration: 1121.33 seconds (18.69 minutes)
+
+Case: LIU DE QIN_42_68
+  Start: 2025-04-18 12:03:44
+  End: 2025-04-18 12:20:04
+  Duration: 980.55 seconds (16.34 minutes)
+
+Case: LIU LIN ZHU_69_151
+  Start: 2025-04-18 12:20:04
+  End: 2025-04-18 13:12:54
+  Duration: 3170.19 seconds (52.84 minutes)
+
+Case: GUO JUAN KUANG_84_89
+  Start: 2025-04-18 13:12:54
+  End: 2025-04-18 13:16:05
+  Duration: 191.05 seconds (3.18 minutes)
+
+Case: ZHONG XIN LIANG_27_31
+  Start: 2025-04-18 13:16:05
+  End: 2025-04-18 13:18:46
+  Duration: 160.29 seconds (2.67 minutes)
+
+Case: LIU LIN ZHU_129_151
+  Start: 2025-04-18 13:18:46
+  End: 2025-04-18 13:32:47
+  Duration: 841.69 seconds (14.03 minutes)
+
