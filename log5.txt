@@ -1,0 +1,186 @@
+Registration Time Log
+=====================
+Start time: 2025-04-19 10:22:55
+
+Case-by-Case Processing Times:
+==============================
+Case: 20097179 neck_1_150
+  Start: 2025-04-19 10:22:55
+  End: 2025-04-19 12:03:17
+  Duration: 6021.56 seconds (100.36 minutes)
+
+Case: HUANG CHENG GONG_87_116
+  Start: 2025-04-19 12:03:17
+  End: 2025-04-19 12:22:21
+  Duration: 1144.24 seconds (19.07 minutes)
+
+Case: ZHONG XIN LIANG_68_93
+  Start: 2025-04-19 12:22:21
+  End: 2025-04-19 12:38:56
+  Duration: 995.04 seconds (16.58 minutes)
+
+Case: GUO JUAN KUANG_91_114
+  Start: 2025-04-19 12:38:56
+  End: 2025-04-19 12:54:11
+  Duration: 914.69 seconds (15.24 minutes)
+
+Case: YANG CHUN CHANG_1_30
+  Start: 2025-04-19 12:54:11
+  End: 2025-04-19 13:13:20
+  Duration: 1148.82 seconds (19.15 minutes)
+
+Case: LIAO CHAO ZHENG_21_75
+  Start: 2025-04-19 13:13:20
+  End: 2025-04-19 13:49:56
+  Duration: 2195.76 seconds (36.60 minutes)
+
+Case: JIANG RUI HE_84_149
+  Start: 2025-04-19 13:49:56
+  End: 2025-04-19 14:33:12
+  Duration: 2596.46 seconds (43.27 minutes)
+
+Case: ZHANG QING QUAN_95_118
+  Start: 2025-04-19 14:33:12
+  End: 2025-04-19 14:48:40
+  Duration: 927.45 seconds (15.46 minutes)
+
+Case: YU JIN LAN_90_93
+  Start: 2025-04-19 14:48:40
+  End: 2025-04-19 14:50:57
+  Duration: 137.03 seconds (2.28 minutes)
+
+Case: GUO JUAN KUANG_38_68
+  Start: 2025-04-19 14:50:57
+  End: 2025-04-19 15:10:44
+  Duration: 1187.89 seconds (19.80 minutes)
+
+Case: GUO JUAN KUANG_117_132
+  Start: 2025-04-19 15:10:44
+  End: 2025-04-19 15:19:40
+  Duration: 535.52 seconds (8.93 minutes)
+
+Case: ZHANG QING QUAN _1_65
+  Start: 2025-04-19 15:19:40
+  End: 2025-04-19 16:02:56
+  Duration: 2596.22 seconds (43.27 minutes)
+
+Case: ZHONG XIN LIANG_94_139
+  Start: 2025-04-19 16:02:56
+  End: 2025-04-19 16:33:48
+  Duration: 1851.50 seconds (30.86 minutes)
+
+Case: LIU DE QIN_106_119
+  Start: 2025-04-19 16:33:48
+  End: 2025-04-19 16:41:37
+  Duration: 469.69 seconds (7.83 minutes)
+
+Case: LIU LIN ZHU_1_50
+  Start: 2025-04-19 16:41:37
+  End: 2025-04-19 17:15:10
+  Duration: 2012.73 seconds (33.55 minutes)
+
+Case: ZHAN ZHEN XING_22_55
+  Start: 2025-04-19 17:15:10
+  End: 2025-04-19 17:37:50
+  Duration: 1360.29 seconds (22.67 minutes)
+
+Case: GUO AN JIA_112_160
+  Start: 2025-04-19 17:37:50
+  End: 2025-04-19 18:10:42
+  Duration: 1971.64 seconds (32.86 minutes)
+
+Case: HUANG CHENG GONG_27_56
+  Start: 2025-04-19 18:10:42
+  End: 2025-04-19 18:29:56
+  Duration: 1153.99 seconds (19.23 minutes)
+
+Case: HUANG CHENG GONG_117_146
+  Start: 2025-04-19 18:29:56
+  End: 2025-04-19 18:48:59
+  Duration: 1143.27 seconds (19.05 minutes)
+
+Case: 12827582 brain_85_94
+  Start: 2025-04-19 18:48:59
+  End: 2025-04-19 18:54:37
+  Duration: 337.37 seconds (5.62 minutes)
+
+Case: JIANG RUI LIN_114_143
+  Start: 2025-04-19 18:54:37
+  End: 2025-04-19 19:13:50
+  Duration: 1152.87 seconds (19.21 minutes)
+
+Case: Q-TZ_1_30
+  Start: 2025-04-19 19:13:50
+  End: 2025-04-19 19:33:06
+  Duration: 1156.70 seconds (19.28 minutes)
+
+Case: LIU LIN ZHU_55_68
+  Start: 2025-04-19 19:33:06
+  End: 2025-04-19 19:40:56
+  Duration: 469.58 seconds (7.83 minutes)
+
+Case: LIAO CHAO ZHENG_140_147
+  Start: 2025-04-19 19:40:56
+  End: 2025-04-19 19:45:25
+  Duration: 269.08 seconds (4.48 minutes)
+
+Case: JIANG RUI HE_1_61
+  Start: 2025-04-19 19:45:25
+  End: 2025-04-19 20:26:15
+  Duration: 2450.01 seconds (40.83 minutes)
+
+Case: LIU DE QIN_21_33
+  Start: 2025-04-19 20:26:15
+  End: 2025-04-19 20:33:31
+  Duration: 435.89 seconds (7.26 minutes)
+
+Case: WANG BING YUAN_5_21
+  Start: 2025-04-19 20:33:31
+  End: 2025-04-19 20:43:19
+  Duration: 588.57 seconds (9.81 minutes)
+
+Case: YU JIN LAN_94_151
+  Start: 2025-04-19 20:43:19
+  End: 2025-04-19 21:22:03
+  Duration: 2323.84 seconds (38.73 minutes)
+
+Case: GUO JUAN KUANG_4_31
+  Start: 2025-04-19 21:22:03
+  End: 2025-04-19 21:40:05
+  Duration: 1082.10 seconds (18.03 minutes)
+
+Case: GUO JUAN KUANG_32_37
+  Start: 2025-04-19 21:40:05
+  End: 2025-04-19 21:43:28
+  Duration: 202.75 seconds (3.38 minutes)
+
+Case: ZHONG XIN LIANG_12_26
+  Start: 2025-04-19 21:43:28
+  End: 2025-04-19 21:51:51
+  Duration: 503.10 seconds (8.38 minutes)
+
+Case: JIANG RUI LIN_54_83
+  Start: 2025-04-19 21:51:51
+  End: 2025-04-19 22:11:31
+  Duration: 1179.65 seconds (19.66 minutes)
+
+Case: YU JIN LAN_31_60
+  Start: 2025-04-19 22:11:31
+  End: 2025-04-19 22:32:45
+  Duration: 1273.86 seconds (21.23 minutes)
+
+Case: YANG CHUN CHANG_88_131
+  Start: 2025-04-19 22:32:45
+  End: 2025-04-19 23:03:11
+  Duration: 1826.41 seconds (30.44 minutes)
+
+Case: LIAO CHAO ZHENG_149_157
+  Start: 2025-04-19 23:03:11
+  End: 2025-04-19 23:08:19
+  Duration: 308.14 seconds (5.14 minutes)
+
+Case: LIU DE QIN_87_93
+  Start: 2025-04-19 23:08:19
+  End: 2025-04-19 23:12:17
+  Duration: 238.01 seconds (3.97 minutes)
+

@@ -1,0 +1,86 @@
+Registration Time Log
+=====================
+Start time: 2025-04-18 14:21:00
+
+Case-by-Case Processing Times:
+==============================
+Case: ZHANG SHUI YING_97_121
+  Start: 2025-04-18 14:21:00
+  End: 2025-04-18 14:36:07
+  Duration: 906.93 seconds (15.12 minutes)
+
+Case: WANG YOU_26_82
+  Start: 2025-04-18 14:36:07
+  End: 2025-04-18 15:12:21
+  Duration: 2174.26 seconds (36.24 minutes)
+
+Case: CHEN JIANG CHUN_4_31
+  Start: 2025-04-18 15:12:21
+  End: 2025-04-18 15:29:25
+  Duration: 1023.47 seconds (17.06 minutes)
+
+Case: Q-TZ_1_151
+  Start: 2025-04-18 15:29:25
+  End: 2025-04-18 17:04:32
+  Duration: 5707.32 seconds (95.12 minutes)
+
+Case: ZHANG SHUI YING_36_40
+  Start: 2025-04-18 17:04:32
+  End: 2025-04-18 17:07:12
+  Duration: 160.17 seconds (2.67 minutes)
+
+Case: LIU LIN ZHU_69_98
+  Start: 2025-04-18 17:07:12
+  End: 2025-04-18 17:25:17
+  Duration: 1084.85 seconds (18.08 minutes)
+
+Case: JIANG RUI LIN_24_161
+  Start: 2025-04-18 17:25:17
+  End: 2025-04-18 18:38:10
+  Duration: 4372.67 seconds (72.88 minutes)
+
+Case: CHEN KUN CHI_1_30
+  Start: 2025-04-18 18:38:10
+  End: 2025-04-18 18:56:15
+  Duration: 1085.43 seconds (18.09 minutes)
+
+Case: CHEN QING YIN_107_136
+  Start: 2025-04-18 18:56:15
+  End: 2025-04-18 19:14:26
+  Duration: 1090.65 seconds (18.18 minutes)
+
+Case: YANG CHUN CHANG_61_87
+  Start: 2025-04-18 19:14:26
+  End: 2025-04-18 19:30:45
+  Duration: 979.70 seconds (16.33 minutes)
+
+Case: ZHANG SHUI YING_28_31
+  Start: 2025-04-18 19:30:45
+  End: 2025-04-18 19:32:55
+  Duration: 129.45 seconds (2.16 minutes)
+
+Case: JIAN MING DE_63_68
+  Start: 2025-04-18 19:32:55
+  End: 2025-04-18 19:36:05
+  Duration: 190.51 seconds (3.18 minutes)
+
+Case: HUANG CHENG GONG_20_23
+  Start: 2025-04-18 19:36:05
+  End: 2025-04-18 19:38:15
+  Duration: 129.26 seconds (2.15 minutes)
+
+Case: Q-TZ_61_90
+  Start: 2025-04-18 19:38:15
+  End: 2025-04-18 19:56:34
+  Duration: 1099.32 seconds (18.32 minutes)
+
+Case: JIAN MING DE_42_46
+  Start: 2025-04-18 19:56:34
+  End: 2025-04-18 19:59:14
+  Duration: 160.26 seconds (2.67 minutes)
+
+Case: ZHANG YING CHANG_52_81
+  Start: 2025-04-18 19:59:14
+  End: 2025-04-18 20:17:30
+  Duration: 1095.70 seconds (18.26 minutes)
+

@@ -1,0 +1,36 @@
+Registration Time Log
+=====================
+Start time: 2025-04-20 11:22:10
+
+Case-by-Case Processing Times:
+==============================
+Case: 12827582 brain_125_150
+  Start: 2025-04-20 11:22:10
+  End: 2025-04-20 11:42:54
+  Duration: 1244.22 seconds (20.74 minutes)
+
+Case: LIU LIN ZHU_51_54
+  Start: 2025-04-20 11:42:54
+  End: 2025-04-20 11:46:27
+  Duration: 212.05 seconds (3.53 minutes)
+
+Case: LIU DE QIN_94_105
+  Start: 2025-04-20 11:46:27
+  End: 2025-04-20 11:59:16
+  Duration: 769.51 seconds (12.83 minutes)
+
+Case: CHEN QING YIN_47_76
+  Start: 2025-04-20 11:59:16
+  End: 2025-04-20 12:29:43
+  Duration: 1826.49 seconds (30.44 minutes)
+
+Case: WANG BING YUAN_62_91
+  Start: 2025-04-20 12:29:43
+  End: 2025-04-20 12:50:35
+  Duration: 1252.75 seconds (20.88 minutes)
+
+Case: YU JIN LAN_61_89
+  Start: 2025-04-20 12:50:35
+  End: 2025-04-20 13:08:32
+  Duration: 1076.63 seconds (17.94 minutes)
+
